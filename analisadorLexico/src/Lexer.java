@@ -1,24 +1,27 @@
 import java.io.*;
 import java.util.*;
+
+
 public class Lexer {
- public static int line = 1; //contador de linhas
- private char ch = ' '; //caractere lido do arquivo
- private FileReader file;
- private Hashtable words = new Hashtable();
+   public static int line = 1; //contador de linhas
+   private char ch = ' '; //caractere lido do arquivo
+   private FileReader file;
+   private Hashtable words = new Hashtable();
  
- /* Método para inserir palavras reservadas na HashTable */
- private void reserve(Word w){
- words.put(w.getLexeme(), w); // lexema é a chave para entrada na 
- //HashTable
- }
- public Lexer(String fileName) throws FileNotFoundException{
-    try{
-    file = new FileReader (fileName);
-    }
-    catch(FileNotFoundException e){
-    System.out.println("Arquivo não encontrado");
-    throw e;
-    }
+   /* Método para inserir palavras reservadas na HashTable */
+   private void reserve(Word w){
+      words.put(w.getLexeme(), w); // lexema é a chave para entrada na HashTable
+   }
+
+   public Lexer(String fileName) throws FileNotFoundException{
+      
+      try{
+         file = new FileReader (fileName);
+      }
+      catch(FileNotFoundException e){
+         System.out.println("Arquivo não encontrado");
+         throw e;
+      }
     //Insere palavras reservadas na HashTable
     reserve(new Word ("if", Tag.IF));
     reserve(new Word ("program", Tag.PRG));

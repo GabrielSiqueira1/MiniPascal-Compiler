@@ -16,10 +16,10 @@ public class Word extends Token{
 
 
     public Word (String s, int tag){
-    super (tag);
+        super (tag);
         lexeme = s;
     }
-    public String toString(){
+    public String getLexeme(){
         return "" + lexeme;
     }
 }
