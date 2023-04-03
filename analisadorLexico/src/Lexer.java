@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Lexer {
    public static int line = 1; //contador de linhas
+   private int length = 0; // limitador do tamanho das palavras
    private char ch = ' '; //caractere lido do arquivo
    private FileReader file;
    private Hashtable words = new Hashtable();
@@ -64,7 +65,7 @@ public class Lexer {
       }
         
       switch(ch){
-      //Operadores
+      //Operadores e pontuação
          case '&':
             if (readch('&')) return Word.and;
             else return new Token('&');
@@ -73,14 +74,35 @@ public class Lexer {
             else return new Token('|');
          case '=':
             if (readch('=')) return Word.eq;
-            else return new Token('=');
+            else return Word.atrib;
          case '<':
             if (readch('=')) return Word.le;
-            else return new Token('<');
+            else return Word.l;
          case '>':
             if (readch('=')) return Word.ge;
-            else return new Token('>');
+            else return Word.g;
+         case '+':
+            if (readch('+')) return Word.sum;
+         case '-':
+            if (readch('-')) return Word.sub;
+         case '*':
+            if (readch('*')) return Word.mult;
+         case '/':
+            if (readch('/')) return Word.div;
+         case '.':
+            if (readch('.')) return Word.dot;
+         case ';':
+            if (readch(';')) return Word.semicolon;
+         case ',':
+            if (readch(',')) return Word.colon;
       }
+
+      // Caractere Constante {}
+
+      // Caractere ''
+
+      // Comentários /*  */
+
       //Números
       if (Character.isDigit(ch)){
          int value=0;
@@ -113,6 +135,8 @@ public class Lexer {
       return t;
 
       }
+
+      
    }
    
 

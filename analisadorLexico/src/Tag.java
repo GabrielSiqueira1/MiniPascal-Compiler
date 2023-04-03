@@ -43,6 +43,9 @@ public class Tag {
     OPENQ = 276,
     CLOSEQ = 277,
     OPENP = 278,
-    CLOSEP = 279;
+    CLOSEP = 279,
+    ATRIB = 280,
+    CHARCONST = 281,
+    LITERAL = 282;
 }
    
