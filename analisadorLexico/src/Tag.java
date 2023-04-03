@@ -31,9 +31,18 @@ public class Tag {
     MULT = 297,
     DIV = 298,
     AND = 299,
+    DOT = 300,
+    COLON = 301,
+    SEMICOLON = 302,
 
     //Outros tokens
-    NUM = 278,
-    ID = 279;
+    NUM = 272,
+    ID = 273,
+    OPENB = 274,
+    CLOSEB = 275,
+    OPENQ = 276,
+    CLOSEQ = 277,
+    OPENP = 278,
+    CLOSEP = 279;
 }
    

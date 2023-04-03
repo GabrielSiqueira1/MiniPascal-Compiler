@@ -22,36 +22,44 @@ public class Lexer {
          System.out.println("Arquivo não encontrado");
          throw e;
       }
-    //Insere palavras reservadas na HashTable
-    reserve(new Word ("if", Tag.IF));
-    reserve(new Word ("program", Tag.PRG));
-    reserve(new Word ("begin", Tag.BEG));
-    reserve(new Word ("end", Tag.END));
-    reserve(new Word ("type", Tag.TYPE));
-    reserve(new Word ("int", Tag.INT));
-    }
+    
+      //Insere palavras reservadas na HashTable
+      reserve(new Word ("if", Tag.IF));
+      reserve(new Word ("program", Tag.PRG));
+      reserve(new Word ("begin", Tag.BEG));
+      reserve(new Word ("end", Tag.END));
+      reserve(new Word ("type", Tag.TYPE));
+      reserve(new Word ("int", Tag.INT));
+      reserve(new Word ("char", Tag.CHAR));
+      reserve(new Word ("bool", Tag.BOOL));
+      reserve(new Word ("then", Tag.THEN));
+      reserve(new Word ("else", Tag.ELSE));
 
-    /*Lê o próximo caractere do arquivo*/
- private void readch() throws IOException{
-    ch = (char) file.read();
-    }
-    /* Lê o próximo caractere do arquivo e verifica se é igual a c*/
-    private boolean readch(char c) throws IOException{
-    readch();
-    if (ch != c) return false;
-    ch = ' ';
-    return true;
-    }
+   }
+
+   /*Lê o próximo caractere do arquivo*/
+   private void readch() throws IOException{
+      ch = (char) file.read();
+   }
+   
+   /* Lê o próximo caractere do arquivo e verifica se é igual a c*/
+   private boolean readch(char c) throws IOException{
+      readch();
+      if (ch != c) return false;
+         ch = ' ';
+         return true;
+      }
    
     public Token scan() throws IOException{
-        //Desconsidera delimitadores na entrada
-        for (;; readch()) {
-        if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b') continue;
-        else if (ch == '\n') line++; //conta linhas
-        else break;
-        }
-        switch(ch){
-        //Operadores
+      //Desconsidera delimitadores na entrada
+      for (;; readch()) {
+         if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b') continue;
+         else if (ch == '\n') line++; //conta linhas
+         else break;
+      }
+        
+      switch(ch){
+      //Operadores
         case '&':
         if (readch('&')) return Word.and;
         else return new Token('&');
