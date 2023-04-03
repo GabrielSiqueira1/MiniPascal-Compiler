@@ -60,51 +60,54 @@ public class Lexer {
         
       switch(ch){
       //Operadores
-        case '&':
-        if (readch('&')) return Word.and;
-        else return new Token('&');
-        case '|':
-        if (readch('|')) return Word.or;
-        else return new Token('|');
-        case '=':
-        if (readch('=')) return Word.eq;
-        else return new Token('=');
-        case '<':
- if (readch('=')) return Word.le;
- else return new Token('<');
- case '>':
- if (readch('=')) return Word.ge;
- else return new Token('>');
- }
- //Números
- if (Character.isDigit(ch)){
- int value=0;
- do{
- value = 10*value + Character.digit(ch,10);
- readch();
- }while(Character.isDigit(ch));
- return new Num(value);
- }
- //Identificadores
- if (Character.isLetter(ch)){
-    StringBuffer sb = new StringBuffer();
-    do{
-    sb.append(ch);
-    readch();
-    }while(Character.isLetterOrDigit(ch));
-    String s = sb.toString();
-    Word w = (Word)words.get(s);
-    if (w != null) return w; //palavra já existe na HashTable
-    w = new Word (s, Tag.ID);
-    words.put(s, w);
-    return w;
-    }
+         case '&':
+            if (readch('&')) return Word.and;
+            else return new Token('&');
+         case '|':
+            if (readch('|')) return Word.or;
+            else return new Token('|');
+         case '=':
+            if (readch('=')) return Word.eq;
+            else return new Token('=');
+         case '<':
+            if (readch('=')) return Word.le;
+            else return new Token('<');
+         case '>':
+            if (readch('=')) return Word.ge;
+         else return new Token('>');
+      }
+      //Números
+      if (Character.isDigit(ch)){
+         int value=0;
+         do{
+            value = 10*value + Character.digit(ch,10);
+            readch();
+         }while(Character.isDigit(ch));
+         return new Num(value);
+      }
+      //Identificadores
+      if (Character.isLetter(ch)){
+         StringBuffer sb = new StringBuffer();
+         do{
+            sb.append(ch);
+            readch();
+         }while(Character.isLetterOrDigit(ch));
+         
+         String s = sb.toString();
+         Word w = (Word)words.get(s);
+         
+         if (w != null) return w; //palavra já existe na HashTable
+            w = new Word (s, Tag.ID);
+            words.put(s, w);
+         return w;
+      }
     
-    //Caracteres não especificados
-    Token t = new Token(ch);
-    ch = ' ';
-    return t;
-    }
+      //Caracteres não especificados
+      Token t = new Token(ch);
+      ch = ' ';
+      return t;
+      
+      }
    }
    
 
