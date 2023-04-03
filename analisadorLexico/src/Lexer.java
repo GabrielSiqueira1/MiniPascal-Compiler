@@ -34,7 +34,12 @@ public class Lexer {
       reserve(new Word ("bool", Tag.BOOL));
       reserve(new Word ("then", Tag.THEN));
       reserve(new Word ("else", Tag.ELSE));
-
+      reserve(new Word ("rep", Tag.REP));
+      reserve(new Word ("until", Tag.UNTIL));
+      reserve(new Word ("while", Tag.WHILE));
+      reserve(new Word ("do", Tag.DO));
+      reserve(new Word ("read", Tag.READ));
+      reserve(new Word ("write", Tag.WRITE));
    }
 
    /*Lê o próximo caractere do arquivo*/
@@ -74,7 +79,7 @@ public class Lexer {
             else return new Token('<');
          case '>':
             if (readch('=')) return Word.ge;
-         else return new Token('>');
+            else return new Token('>');
       }
       //Números
       if (Character.isDigit(ch)){
@@ -106,7 +111,7 @@ public class Lexer {
       Token t = new Token(ch);
       ch = ' ';
       return t;
-      
+
       }
    }
    
