@@ -97,9 +97,31 @@ public class Lexer {
             if (readch(',')) return Word.colon;
       }
 
-      // Caractere Constante {}
+      // Caractere Constante ''
 
-      // Caractere ''
+      // Literal {}
+
+      if (ch == '{'){
+         StringBuffer sb = new StringBuffer();
+         sb.append(ch);
+         do{
+            sb.append(ch);
+            readch();
+         }while(Integer.valueOf(ch) != 10 && Integer.valueOf(ch) != 125);
+            
+         if(Integer.valueOf(ch) == 10){
+            System.out.println("Token mal formado");
+         } else if (Integer.valueOf(ch) == 125){
+            sb.append(ch);
+            String s = sb.toString();
+            Word w = (Word)words.get(s);
+            
+            if (w != null) return w; //palavra já existe na HashTable
+               w = new Word (s, Tag.ID);
+               words.put(s, w);
+            return w;
+         }
+      }
 
       // Comentários /*  */
 
@@ -112,13 +134,14 @@ public class Lexer {
          }while(Character.isDigit(ch));
          return new Num(value);
       }
+
       //Identificadores
       if (Character.isLetter(ch)){
          StringBuffer sb = new StringBuffer();
          do{
             sb.append(ch);
             readch();
-         }while(Character.isLetterOrDigit(ch));
+         }while(Character.isLetterOrDigit(ch) || Integer.valueOf(ch) == 95);
          
          String s = sb.toString();
          Word w = (Word)words.get(s);
