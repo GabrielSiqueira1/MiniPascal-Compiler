@@ -8,11 +8,30 @@ public class Tag {
     INT = 260,
     CHAR = 261,
     BOOL = 262,
+    IF = 263,
+    THEN = 264, 
+    ELSE = 265,
+    REP = 266,
+    UNTIL = 267,
+    WHILE = 268,
+    DO = 269,
+    READ = 270,
+    WRITE = 271,
+
     //Operadores e pontuação
     EQ = 288,
-    GE = 289,
-    LE = 290,
-    NE = 291,
+    G = 289,
+    GE = 290,
+    L = 291,
+    LE = 292,
+    NE = 293,
+    SUM = 294,
+    SUB = 295,
+    OR = 296,
+    MULT = 297,
+    DIV = 298,
+    AND = 299,
+
     //Outros tokens
     NUM = 278,
     ID = 279;
