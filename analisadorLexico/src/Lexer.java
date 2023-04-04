@@ -65,7 +65,7 @@ public class Lexer {
       }
         
       switch(ch){
-      //Operadores e pontuação
+      //Operadores, pontuação, chaves e parênteses
          case '&':
             if (readch('&')) return Word.and;
             else return new Token('&');
@@ -82,19 +82,43 @@ public class Lexer {
             if (readch('=')) return Word.ge;
             else return Word.g;
          case '+':
-            if (readch('+')) return Word.sum;
+            return Word.sum;
          case '-':
-            if (readch('-')) return Word.sub;
+            return Word.sub;
          case '*':
-            if (readch('*')) return Word.mult;
+            return Word.mult;
          case '/':
-            if (readch('/')) return Word.div;
+            return Word.div;
          case '.':
-            if (readch('.')) return Word.dot;
+            return Word.dot;
          case ';':
-            if (readch(';')) return Word.semicolon;
+            return Word.semicolon;
          case ',':
-            if (readch(',')) return Word.colon;
+            return Word.colon;
+         case '{':
+            if (Integer.valueOf(ch) != 10 && Integer.valueOf(ch) != 125){
+               StringBuffer sb = new StringBuffer();
+               sb.append('{');
+               sb.append(ch);
+               do{
+                  sb.append(ch);
+                  readch();
+               }while(Integer.valueOf(ch) != 10 && Integer.valueOf(ch) != 125);
+               
+               if(Integer.valueOf(ch) == 10){
+                  System.out.println("Token mal formado");
+               } else if (Integer.valueOf(ch) == 125){
+                  sb.append(ch);
+                  String s = sb.toString();
+                  Word w = (Word)words.get(s);
+
+                  if (w != null) return w; //palavra já existe na HashTable
+                     w = new Word (s, Tag.ID);
+                     words.put(s, w);
+                  return w;
+               }
+            }
+            else return Word.openb;
       }
 
       // Caractere Constante ''
