@@ -96,60 +96,53 @@ public class Lexer {
          case ',':
             return Word.colon;
          case '{':
-            if (Integer.valueOf(ch) != 10 && Integer.valueOf(ch) != 125){
+            if (!readch('\n')){
                StringBuffer sb = new StringBuffer();
                sb.append('{');
-               sb.append(ch);
                do{
+                  length += 1;
                   sb.append(ch);
                   readch();
-               }while(Integer.valueOf(ch) != 10 && Integer.valueOf(ch) != 125);
+               }while(Integer.valueOf(ch) != 10 && Integer.valueOf(ch) != 125 && length <= 255);
                
                if(Integer.valueOf(ch) == 10){
-                  System.out.println("Token mal formado");
+                  System.out.println("Token mal formado.");
                } else if (Integer.valueOf(ch) == 125){
                   sb.append(ch);
                   String s = sb.toString();
-                  Word w = (Word)words.get(s);
 
-                  if (w != null) return w; //palavra já existe na HashTable
-                     w = new Word (s, Tag.ID);
-                     words.put(s, w);
-                  return w;
+                  return new Literal(s);
+               } else if (length == 256){
+                  System.out.println("Literal com tamanho limite.");
                }
             }
             else return Word.openb;
+         case '}':
+            return Word.closeb;
+         case ')':
+            return Word.closep;
+         case '(':
+            return Word.openp;
       }
 
       // Caractere Constante ''
-
-      // Literal {}
-
-      if (ch == '{'){
+      if(Integer.valueOf(ch) == 39){
          StringBuffer sb = new StringBuffer();
          sb.append(ch);
-         do{
-            sb.append(ch);
-            readch();
-         }while(Integer.valueOf(ch) != 10 && Integer.valueOf(ch) != 125);
-            
-         if(Integer.valueOf(ch) == 10){
-            System.out.println("Token mal formado");
-         } else if (Integer.valueOf(ch) == 125){
+         readch();
+         sb.append(ch);
+         readch();
+         if(Integer.valueOf(ch) == 39){
             sb.append(ch);
             String s = sb.toString();
-            Word w = (Word)words.get(s);
-            
-            if (w != null) return w; //palavra já existe na HashTable
-               w = new Word (s, Tag.ID);
-               words.put(s, w);
-            return w;
-         }
+
+            return new CharConst(s);
+         } else System.out.println("Token mal formado.");
       }
 
       // Comentários /*  */
 
-      //Números
+      //Números inteiros
       if (Character.isDigit(ch)){
          int value=0;
          do{
