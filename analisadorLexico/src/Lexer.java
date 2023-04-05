@@ -83,10 +83,13 @@ public class Lexer {
             if (readch('=')) return Word.ge;
             else return Word.g;
          case '+':
+            readch();
             return Word.sum;
          case '-':
+            readch();
             return Word.sub;
          case '*':
+            readch();
             return Word.mult;
          case '/':
                if (readch('*')){
@@ -96,10 +99,13 @@ public class Lexer {
                }
                else return Word.div;
          case '.':
+            readch();
             return Word.dot;
          case ';':
+            readch();
             return Word.semicolon;
          case ',':
+            readch();
             return Word.colon;
          case '{':
             if (!readch('\n')){
@@ -124,10 +130,13 @@ public class Lexer {
             }
             else return Word.openb;
          case '}':
+            readch();
             return Word.closeb;
          case ')':
+            readch();
             return Word.closep;
          case '(':
+            readch();
             return Word.openp;
       }
 
@@ -156,11 +165,12 @@ public class Lexer {
             if(readch('.')){
                f = 1;
                dot = 0;
+               readch();
             }
             dot += 1;
          }while(Character.isDigit(ch));
          if(f == 0) return new NumI(value);
-         else return new NumF(value/(Math.pow(value, dot)));
+         else return new NumF(value/(Math.pow(10, dot)));
       }
 
       //Identificadores
@@ -187,6 +197,9 @@ public class Lexer {
 
       }
 
+      public Hashtable getWords(){
+         return words;
+      }
       
    }
    

@@ -17,10 +17,10 @@ public class Word extends Token{
     public static final Word dot = new Word(".", Tag.DOT);
     public static final Word colon = new Word(",", Tag.COLON);
     public static final Word semicolon = new Word(";", Tag.SEMICOLON);
-    public static final Word openb = new Word(";", Tag.SEMICOLON);
-    public static final Word closeb = new Word(";", Tag.SEMICOLON);
-    public static final Word openp = new Word(";", Tag.SEMICOLON);
-    public static final Word closep = new Word(";", Tag.SEMICOLON);
+    public static final Word openb = new Word(";", Tag.OPENB);
+    public static final Word closeb = new Word(";", Tag.CLOSEB);
+    public static final Word openp = new Word(";", Tag.OPENP);
+    public static final Word closep = new Word(";", Tag.CLOSEP);
 
     public Word (String s, int tag){
         super (tag);
