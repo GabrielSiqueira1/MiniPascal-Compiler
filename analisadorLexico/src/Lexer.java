@@ -14,10 +14,10 @@ public class Lexer {
       words.put(w.getLexeme(), w); // lexema é a chave para entrada na HashTable
    }
 
-   public Lexer(String fileName) throws FileNotFoundException{
+   public Lexer() throws FileNotFoundException{
       
       try{
-         file = new FileReader (fileName);
+         file = new FileReader ("C:/Users/Gabriel/Projetos/MiniPascal-Compiler/teste-sem-erros.txt");
       }
       catch(FileNotFoundException e){
          System.out.println("Arquivo não encontrado");
@@ -149,14 +149,18 @@ public class Lexer {
       //Números
       if (Character.isDigit(ch)){
          int value=0;
-         float valueF = 0;
+         int dot = 0;
+         int f = 0;
          do{
             value = 10*value + Character.digit(ch,10);
             if(readch('.')){
-               
+               f = 1;
+               dot = 0;
             }
+            dot += 1;
          }while(Character.isDigit(ch));
-         return new Num(value);
+         if(f == 0) return new NumI(value);
+         else return new NumF(value/(Math.pow(value, dot)));
       }
 
       //Identificadores

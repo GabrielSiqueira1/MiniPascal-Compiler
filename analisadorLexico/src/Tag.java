@@ -17,7 +17,7 @@ public class Tag {
     DO = 269,
     READ = 270,
     WRITE = 271,
-    FLOAT = 283,
+    FLOAT = 272,
 
     //Operadores e pontuação
     EQ = 288,
@@ -37,7 +37,6 @@ public class Tag {
     SEMICOLON = 302,
 
     //Outros tokens
-    NUM = 272,
     ID = 273,
     OPENB = 274,
     CLOSEB = 275,
