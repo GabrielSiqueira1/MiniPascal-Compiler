@@ -4,6 +4,7 @@ public class Num extends Token{
         super(Tag.NUM);
         this.value = value;
     }
+    
     public String toString(){
         return "" + value;
     }

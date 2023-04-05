@@ -17,6 +17,7 @@ public class Tag {
     DO = 269,
     READ = 270,
     WRITE = 271,
+    FLOAT = 283,
 
     //Operadores e pontuação
     EQ = 288,

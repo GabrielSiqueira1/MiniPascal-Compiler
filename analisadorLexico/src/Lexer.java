@@ -41,6 +41,7 @@ public class Lexer {
       reserve(new Word ("do", Tag.DO));
       reserve(new Word ("read", Tag.READ));
       reserve(new Word ("write", Tag.WRITE));
+      reserve(new Word ("float", Tag.FLOAT));
    }
 
    /*Lê o próximo caractere do arquivo*/
@@ -88,7 +89,12 @@ public class Lexer {
          case '*':
             return Word.mult;
          case '/':
-            return Word.div;
+               if (readch('*')){
+                  do{
+                     readch();
+                  }while(ch == '*' && readch('/'));
+               }
+               else return Word.div;
          case '.':
             return Word.dot;
          case ';':
@@ -140,14 +146,15 @@ public class Lexer {
          } else System.out.println("Token mal formado.");
       }
 
-      // Comentários /*  */
-
-      //Números inteiros
+      //Números
       if (Character.isDigit(ch)){
          int value=0;
+         float valueF = 0;
          do{
             value = 10*value + Character.digit(ch,10);
-            readch();
+            if(readch('.')){
+               
+            }
          }while(Character.isDigit(ch));
          return new Num(value);
       }
