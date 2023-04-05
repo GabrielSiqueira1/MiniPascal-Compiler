@@ -164,7 +164,7 @@ public class Lexer {
             value = 10*value + Character.digit(ch,10);
             if(readch('.')){
                f = 1;
-               dot = 0;
+               dot = -1;
                readch();
             }
             dot += 1;
