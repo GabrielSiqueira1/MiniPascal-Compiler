@@ -14,10 +14,10 @@ public class Lexer {
       words.put(w.getLexeme(), w); // lexema é a chave para entrada na HashTable
    }
 
-   public Lexer() throws FileNotFoundException{
+   public Lexer(String filename) throws FileNotFoundException{
       
       try{
-         file = new FileReader ("C:/Users/Gabriel/Projetos/MiniPascal-Compiler/teste-sem-erros.txt");
+         file = new FileReader (filename);
       }
       catch(FileNotFoundException e){
          System.out.println("Arquivo não encontrado");
