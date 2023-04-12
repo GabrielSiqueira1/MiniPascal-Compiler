@@ -1,8 +1,8 @@
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        Lexer teste = new Lexer("C:/Users/Gabriel/Projetos/MiniPascal-Compiler/Testes/Lexer/teste-sem-erros.txt");
+    public static void main(String[] args) throws Exception {
+        Lexer teste = new Lexer("/home/gabriel/Projetos/MiniPascal-Compiler/Testes/Lexer/teste1.txt");
         Token scan = teste.scan();
         while(!(scan.toString().equals("65535"))){
             

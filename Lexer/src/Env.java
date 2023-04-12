@@ -1,5 +1,4 @@
-package symbols;
-import lexico.*;
+
 import java.util.*;
 public class Env {
  private Hashtable table; //tabela de símbolos do ambiente

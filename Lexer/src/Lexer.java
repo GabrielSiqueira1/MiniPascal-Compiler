@@ -57,7 +57,7 @@ public class Lexer {
          return true;
       }
    
-    public Token scan() throws IOException{
+    public Token scan() throws Exception{
       //Desconsidera delimitadores na entrada
       for (;; readch()) {
          if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\b') continue;
@@ -152,7 +152,7 @@ public class Lexer {
             String s = sb.toString();
 
             return new CharConst(s);
-         } else System.out.println("Token mal formado.");
+         } else throw new Exception("Token mal formado na linha "+line);
       }
 
       //Números
@@ -166,6 +166,7 @@ public class Lexer {
                f = 1;
                dot = -1;
                readch();
+               if(!Character.isDigit(ch)) throw new Exception("Token mal formado na linha "+line);  
             }
             dot += 1;
          }while(Character.isDigit(ch));
