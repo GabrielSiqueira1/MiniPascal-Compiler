@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) throws Exception {
-        Lexer teste = new Lexer("C:/Users/Gabriel/Projetos/MiniPascal-Compiler/Testes/Lexer/teste2.txt");
+        Lexer teste = new Lexer("C:/Users/Gabriel/Projetos/MiniPascal-Compiler/Testes/Lexer/teste5.txt");
         Token scan = teste.scan();
         while(!(scan.toString().equals("65535"))){
             

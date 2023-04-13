@@ -161,6 +161,7 @@ public class Lexer {
          readch();
          if(Integer.valueOf(ch) == 39){
             sb.append(ch);
+            readch();
             String s = sb.toString();
 
             return new CharConst(s);
