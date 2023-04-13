@@ -3,11 +3,12 @@ import java.util.*;
 
 
 public class Lexer {
+
    public static int line = 1; //contador de linhas
    private int length = 0; // limitador do tamanho das palavras
    private char ch = ' '; //caractere lido do arquivo
    private FileReader file;
-   private Hashtable words = new Hashtable();
+   private SymbolTable words = new SymbolTable(null);
  
    /* Método para inserir palavras reservadas na HashTable */
    private void reserve(Word w){
@@ -55,7 +56,7 @@ public class Lexer {
       if (ch != c) return false;
          ch = ' ';
          return true;
-      }
+   }
    
     public Token scan() throws Exception{
       //Desconsidera delimitadores na entrada
@@ -196,13 +197,10 @@ public class Lexer {
       ch = ' ';
       return t;
 
-      }
-
-      public Hashtable getWords(){
-         return words;
-      }
-      
    }
-   
 
-       
+   public Hashtable<String, Word> getWords(){
+      return words.getTable();
+   }
+      
+}
