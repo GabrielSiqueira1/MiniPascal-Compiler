@@ -1,0 +1,14 @@
+program
+ a, aux is int;
+ b is float
+ begin
+ b = 0;
+ in (a);
+ in(b);
+ if (a>b) then //troca variaveis
+ aux = b;
+ b = a;
+ a = aux
+ end;
+ write(a;
+ write(b)

@@ -1,0 +1,29 @@
+/* Teste do meu compilador */
+program teste5
+ a, b, c, maior is int;
+ outro is char;
+begin
+ repeat
+ write({A});
+ read(a);
+ write({B});
+ read(b);
+ write({C});
+ read(c);
+ if ( (a>b) && (a>c) ) end
+ maior = a
+
+ else
+ if (b>c) then
+ maior = b;
+
+ else
+ maior = c
+ end
+ end;
+ write({Maior valor:}});
+ write (maior);
+ write ({Outro? (S/N)});
+ read(outro);
+ until (outro == 'N' || outro == 'n)
+end
