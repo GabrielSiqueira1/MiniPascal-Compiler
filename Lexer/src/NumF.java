@@ -8,8 +8,5 @@ public class NumF extends Token{
     public String toString(){
         return "" + value;
     }
-    public String tag() {
-        return super.getName;
-   }
 }
    

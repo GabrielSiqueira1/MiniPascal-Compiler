@@ -26,6 +26,7 @@ public class Lexer {
       }
     
       //Insere palavras reservadas na HashTable
+      reserve(new Word ("is", Tag.IS));
       reserve(new Word ("if", Tag.IF));
       reserve(new Word ("program", Tag.PRG));
       reserve(new Word ("begin", Tag.BEG));
@@ -54,8 +55,8 @@ public class Lexer {
    private boolean readch(char c) throws IOException{
       readch();
       if (ch != c) return false;
-         ch = ' ';
-         return true;
+      ch = ' ';
+      return true;
    }
    
     public Token scan() throws Exception{
@@ -96,8 +97,14 @@ public class Lexer {
                if (readch('*')){
                   do{
                      readch();
-                  }while(ch == '*' && readch('/'));
-               }
+                  }while( !(ch == '*' && readch('/')) && (int) ch != 65535);
+
+                  if((int) ch == 65535) throw new Exception("Comentário não finalizado na linha "+line);
+                  else{
+                     Token t = new Token('\n');
+                     return t;             
+                  }
+               } 
                else return Word.div;
          case '.':
             readch();
@@ -119,14 +126,14 @@ public class Lexer {
                }while(Integer.valueOf(ch) != 10 && Integer.valueOf(ch) != 125 && length <= 255);
                
                if(Integer.valueOf(ch) == 10){
-                  System.out.println("Token mal formado.");
+                  throw new Exception("Token mal formado na linha "+line);
                } else if (Integer.valueOf(ch) == 125){
                   sb.append(ch);
                   String s = sb.toString();
 
                   return new Literal(s);
                } else if (length == 256){
-                  System.out.println("Literal com tamanho limite.");
+                  throw new Exception("Literal com o tamanho limite de "+length+" na linha "+line);
                }
             }
             else return Word.openb;
@@ -139,6 +146,10 @@ public class Lexer {
          case '(':
             readch();
             return Word.openp;
+         case '_':
+            readch();
+            if(Character.isLetterOrDigit(ch)) throw new Exception("Token mal formado na linha "+line);
+            else return new Token('_'); 
       }
 
       // Caractere Constante ''
@@ -181,7 +192,7 @@ public class Lexer {
          do{
             sb.append(ch);
             readch();
-         }while(Character.isLetterOrDigit(ch) || Integer.valueOf(ch) == 95);
+         }while(Character.isLetterOrDigit(ch) || Integer.valueOf(ch) == 95 || (Integer.valueOf(ch) >= 128 && Integer.valueOf(ch) <= 256));
          
          String s = sb.toString();
          Word w = (Word)words.get(s);

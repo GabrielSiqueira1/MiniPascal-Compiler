@@ -1,6 +1,7 @@
 public class Word extends Token{
     private String lexeme = "";
 
+    public static final Word is = new Word ("is", Tag.IS);
     public static final Word eq = new Word ("==", Tag.EQ);
     public static final Word g = new Word (">", Tag.G);
     public static final Word ge = new Word (">=", Tag.GE);
@@ -10,6 +11,7 @@ public class Word extends Token{
     public static final Word sum = new Word("+", Tag.SUM);
     public static final Word sub = new Word("-", Tag.SUB);
     public static final Word or = new Word("||", Tag.OR);
+    public static final Word excl = new Word("!", Tag.EXCL);
     public static final Word mult = new Word("*", Tag.MULT);
     public static final Word div = new Word("/", Tag.DIV);
     public static final Word and = new Word("&&", Tag.AND);

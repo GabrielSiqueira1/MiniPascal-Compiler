@@ -1,6 +1,7 @@
 public class Tag {
     public final static int
     //Palavras reservadas
+    IS = 255,
     PRG = 256,
     BEG = 257,
     END = 258,
@@ -35,6 +36,7 @@ public class Tag {
     DOT = 300,
     COLON = 301,
     SEMICOLON = 302,
+    EXCL = 303,
 
     //Outros tokens
     ID = 273,
