@@ -12,7 +12,7 @@ public class Tag {
     IF = 263,
     THEN = 264, 
     ELSE = 265,
-    REP = 266,
+    REPEAT = 266,
     UNTIL = 267,
     WHILE = 268,
     DO = 269,

@@ -37,7 +37,7 @@ public class Lexer {
       reserve(new Word ("bool", Tag.BOOL));
       reserve(new Word ("then", Tag.THEN));
       reserve(new Word ("else", Tag.ELSE));
-      reserve(new Word ("rep", Tag.REP));
+      reserve(new Word ("repeat", Tag.REPEAT));
       reserve(new Word ("until", Tag.UNTIL));
       reserve(new Word ("while", Tag.WHILE));
       reserve(new Word ("do", Tag.DO));
@@ -71,11 +71,11 @@ public class Lexer {
       //Operadores, pontuação, chaves e parênteses
          case '&':
             if (readch('&')) return Word.and;
-            else return new Token('&');
+            else throw new Exception("Token nao pertencente a linguagem na linha "+line);
          case '|':
             if (readch('|')) return Word.or;
-            else return new Token('|');
-         case '=':
+	         else throw new Exception("Token nao pertencente a linguagem na linha "+line);
+	      case '=':
             if (readch('=')) return Word.eq;
             else return Word.atrib;
          case '<':
@@ -99,7 +99,7 @@ public class Lexer {
                      readch();
                   }while( !(ch == '*' && readch('/')) && (int) ch != 65535);
 
-                  if((int) ch == 65535) throw new Exception("Comentário não finalizado na linha "+line);
+                  if((int) ch == 65535) throw new Exception("Comentario nao finalizado na linha "+line);
                   else{
                      Token t = new Token('\n');
                      return t;             
@@ -149,7 +149,7 @@ public class Lexer {
          case '_':
             readch();
             if(Character.isLetterOrDigit(ch)) throw new Exception("Token mal formado na linha "+line);
-            else return new Token('_'); 
+            else throw new Exception("Operador inexistente na linha "+line);
       }
 
       // Caractere Constante ''
@@ -193,21 +193,25 @@ public class Lexer {
          do{
             sb.append(ch);
             readch();
-         }while(Character.isLetterOrDigit(ch) || Integer.valueOf(ch) == 95 || (Integer.valueOf(ch) >= 128 && Integer.valueOf(ch) <= 256));
+	      }while(Character.isLetterOrDigit(ch) || Integer.valueOf(ch) == 95);
          
-         String s = sb.toString();
-         Word w = (Word)words.get(s);
-         
-         if (w != null) return w; //palavra já existe na HashTable
-            w = new Word (s, Tag.ID);
-            words.put(s, w);
-         return w;
+         if((Integer.valueOf(ch) >= 128 && Integer.valueOf(ch) <= 256)) throw new Exception("Token mal formado na linha "+line);
+            String s = sb.toString();
+            Word w = (Word)words.get(s);
+            
+            if (w != null) return w; //palavra já existe na HashTable
+               w = new Word (s, Tag.ID);
+               words.put(s, w);
+            return w;
       }
     
       //Caracteres não especificados
-      Token t = new Token(ch);
-      ch = ' ';
-      return t;
+      if((int) ch == 65535){ //EOF
+         Token t = new Token(ch);
+         ch = ' ';
+         return t;
+      }
+      else throw new Exception("Token nao pertencente a linguagem na linha "+line); //Outros caracteres não pertencentes a linguagem
 
    }
 
