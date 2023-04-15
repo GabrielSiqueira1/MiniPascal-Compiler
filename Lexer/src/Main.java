@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) throws Exception {
-        Lexer teste = new Lexer("../../Testes/Lexer/teste5-corrigido.txt");
+        Lexer teste = new Lexer("../../Testes/Lexer/segundo-teste-extra-erro.txt");
         Token scan = teste.scan();
         while(!(scan.toString().equals("65535"))){
             

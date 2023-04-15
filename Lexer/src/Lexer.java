@@ -97,6 +97,7 @@ public class Lexer {
                if (readch('*')){
                   do{
                      readch();
+                     if(ch == '\n') line++;
                   }while( !(ch == '*' && readch('/')) && (int) ch != 65535);
 
                   if((int) ch == 65535) throw new Exception("Comentario nao finalizado na linha "+line);
@@ -117,6 +118,7 @@ public class Lexer {
             return Word.colon;
          case '{':
             if (!readch('\n')){
+               length = 0;
                StringBuffer sb = new StringBuffer();
                sb.append('{');
                do{
