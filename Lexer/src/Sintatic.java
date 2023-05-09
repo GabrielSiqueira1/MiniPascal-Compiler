@@ -142,5 +142,12 @@ public class Sintatic {
         }
     }
     
-    
+    void mulop(){
+        switch(tok){
+            case MULT: eat(MULT); break;
+            case DIV: eat(DIV); break;
+            case AND: eat(AND); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
 }
