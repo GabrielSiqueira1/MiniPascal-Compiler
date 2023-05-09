@@ -137,12 +137,24 @@ public class Sintatic {
         switch(tok){
             case MULT:
             case DIV:
-            case AND: mulop(); fatorA(); break;
+            case AND: mulOp(); fatorA(); break;
             default: throw new Exception("Token inesperado!");
         }
     }
     
-    void mulop(){
+    void relOp(){
+        switch(tok){
+            case EQ: eat(EQ); break;
+            case G: eat(G); break;
+            case GE: eat(GE); break;
+            case NE: eat(NE); break;
+            case L: eat(L); break;
+            case LE: eat(LE); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+    
+    void mulOp(){
         switch(tok){
             case MULT: eat(MULT); break;
             case DIV: eat(DIV); break;
