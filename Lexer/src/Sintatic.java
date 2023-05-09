@@ -78,12 +78,49 @@ public class Sintatic {
         }
     }
 
-    void simpleExprPrime(){
-        
+    void simpleExprPrime() throws Exception{
+        switch(tok){
+            case SUM:
+            case SUB:
+            case OR: addOp(); term(); simpleExprPrime(); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+    
+    void addOp() throws Exception{
+        switch(tok){
+            case SUM: eat(SUM); break;
+            case SUB: eat(SUB); break;
+            case OR: eat(OR); break;
+            default: throw new Exception("Token inesperado!");
+        }
     }
 
     void term(){
-
+        switch(tok){
+            case ID:
+            case INT:
+            case FLOAT:
+            case CHAR:
+            case OPENP:
+            case EXCL: 
+            case SUB: fatorA(); termPrime(); break;
+            default: throw new Exception("Token inesperado!");
+        }
     }
-
+    
+    void fatorA(){
+        case ID:
+            case INT:
+            case FLOAT:
+            case CHAR:
+            case OPENP: factor(); break;
+            case EXCL: eat(EXCL); factor(); break;
+            case SUB: eat(SUB); factor(); break;
+            default: throw new Exception("Token inesperado!");
+    }
+    
+    void termPrime(){
+        
+    }
 }
