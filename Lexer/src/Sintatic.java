@@ -110,7 +110,8 @@ public class Sintatic {
     }
     
     void fatorA(){
-        case ID:
+        switch(tok){
+            case ID:
             case INT:
             case FLOAT:
             case CHAR:
@@ -118,6 +119,18 @@ public class Sintatic {
             case EXCL: eat(EXCL); factor(); break;
             case SUB: eat(SUB); factor(); break;
             default: throw new Exception("Token inesperado!");
+        }
+    }
+    
+    void factor(){
+        switch(tok){
+            case ID: eat(ID); break;
+            case INT: eat(INT); break;
+            case FLOAT: eat(FLOAT); break;
+            case CHAR: eat(CHAR); break;
+            case OPENP: eat(OPENP); expr(); eat(CLOSEP); break;
+            default: throw new Exception("Token inesperado!");
+        }
     }
     
     void termPrime(){
