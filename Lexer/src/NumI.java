@@ -1,7 +1,7 @@
 public class NumI extends Token{
     public final int value;
     public NumI(int value){
-        super(Tag.INT);
+        super(Tag.INTCONST);
         this.value = value;
     }
     
