@@ -134,6 +134,13 @@ public class Sintatic {
     }
     
     void termPrime(){
-        
+        switch(tok){
+            case MULT:
+            case DIV:
+            case AND: mulop(); fatorA(); break;
+            default: throw new Exception("Token inesperado!");
+        }
     }
+    
+    
 }
