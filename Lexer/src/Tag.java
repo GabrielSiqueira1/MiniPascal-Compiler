@@ -48,6 +48,8 @@ public class Tag {
     CLOSEP = 279,
     ATRIB = 280,
     CHARCONST = 281,
-    LITERAL = 282;
+    LITERAL = 282,
+    INTCONST = 283,
+    FLOATCONST = 284;
 }
    
