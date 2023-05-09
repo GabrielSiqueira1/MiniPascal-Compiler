@@ -48,7 +48,9 @@ public class Sintatic {
     CLOSEP = 279,
     ATRIB = 280,
     CHARCONST = 281,
-    LITERAL = 282;
+    LITERAL = 282,
+    INTCONST = 283,
+    FLOATCONST = 284;
 
     int tok = 0;
     Lexer v;
@@ -96,7 +98,7 @@ public class Sintatic {
         }
     }
 
-    void term(){
+    void term() throw Exception{
         switch(tok){
             case ID:
             case INT:
@@ -109,7 +111,7 @@ public class Sintatic {
         }
     }
     
-    void fatorA(){
+    void fatorA() throw Exception{
         switch(tok){
             case ID:
             case INT:
@@ -122,18 +124,18 @@ public class Sintatic {
         }
     }
     
-    void factor(){
+    void factor() throw Exception{
         switch(tok){
             case ID: eat(ID); break;
-            case INT: eat(INT); break;
-            case FLOAT: eat(FLOAT); break;
-            case CHAR: eat(CHAR); break;
+            case INT:
+            case FLOAT:
+            case CHAR: constant(); break;
             case OPENP: eat(OPENP); expr(); eat(CLOSEP); break;
             default: throw new Exception("Token inesperado!");
         }
     }
     
-    void termPrime(){
+    void termPrime() throw Exception{
         switch(tok){
             case MULT:
             case DIV:
@@ -142,7 +144,7 @@ public class Sintatic {
         }
     }
     
-    void relOp(){
+    void relOp() throw Exception{
         switch(tok){
             case EQ: eat(EQ); break;
             case G: eat(G); break;
@@ -154,11 +156,20 @@ public class Sintatic {
         }
     }
     
-    void mulOp(){
+    void mulOp() throw Exception{
         switch(tok){
             case MULT: eat(MULT); break;
             case DIV: eat(DIV); break;
             case AND: eat(AND); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+    
+    void constant() throw Exception{
+        switch(tok){
+            case INTCONST: eat(INTCONST); break;
+            case FLOATCONST: eat(FLOATCONST); break;
+            case CHARCONST: eat(CHARCONST); break;
             default: throw new Exception("Token inesperado!");
         }
     }
