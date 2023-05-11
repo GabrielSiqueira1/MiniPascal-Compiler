@@ -68,6 +68,129 @@ public class Sintatic {
         if(tok == t) advance();
         else throw new Exception("Token desigual ao caractere esperado!");
     }
+    
+    void program(){
+        switch(tok){
+            case PROGRAM: eat(ID);
+                switch(tok){
+                    case ID: decl_list(); eat(BEGIN); break;
+                    case BEGIN: break;
+                    default: throw new Exception("Token inesperado!");
+                }
+
+                stmt_list(); eat(END); eat(DOT); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+
+    void decl_list(){ 
+        switch(tok){
+            case ID: decl(); eat(SEMICOLON); 
+                boolean shouldBreak = false;
+                while(true){
+                    switch(tok){
+                        case ID: decl(); eat(SEMICOLON); break;
+                        default: shouldBreak = true; break;
+                    }
+                    if(shouldBreak){
+                        break;
+                    }
+                }
+                break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+
+    void decl(){ 
+        switch(tok){
+            case ID: ident_list(); eat(IS); type(); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+
+    void ident_list(){ 
+        switch(tok){
+            case ID: 
+                boolean shouldBreak = false;
+                while(true){
+                    switch(tok){
+                        case SEMICOLON: eat(ID); break;
+                        default: shouldBreak = true; break;
+                    }
+                    if(shouldBreak){
+                        break;
+                    }
+                }
+                break;
+                default: throw new Exception("Token inesperado!");
+        }
+    }
+
+    void type(){
+        switch(tok){
+            case INT: break;
+            case FLOAT: break;
+            case CHAR: break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+
+    void stmt_list(){ 
+        switch(tok){
+            case ID:
+            case IF:
+            case WHILE:
+            case REPEAT:
+            case READ:
+            case WRITE: stmt();
+                boolean shouldBreak = false;
+                    while(true){
+                        switch(tok){
+                            case SEMICOLON: stmt(); break;
+                            default: shouldBreak = true; break;
+                        }
+                        if(shouldBreak){
+                            break;
+                        }
+                    }
+                    break;
+                default: throw new Exception("Token inesperado!");
+        }
+    }
+
+    void stmt(){
+        switch(tok){
+            case ID: assign_stmt(); break;
+            case IF: if_stmt(); break;
+            case WHILE: while_stmt(); break;
+            case REPEAT: repeat_stmt(); break;
+            case READ: read_stmt(); break;
+            case WRITE: write_stmt(); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+
+    void assign_stmt(){
+        switch(tok){
+            case ID: eat(EQ); simple_expr(); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+
+    void if_stmt(){
+        switch(tok){
+            case IF: condition(); eat(THEN); stmt_list(); if_stmt_prime(); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
+    
+    void if_stmt_prime(){
+        switch(tok){
+            case END: break;
+            case ELSE: stmt_list(); eat(END); break;
+            default: throw new Exception("Token inesperado!");
+        }
+    }
 
     void simpleExpr() throws Exception{
         switch(tok){
