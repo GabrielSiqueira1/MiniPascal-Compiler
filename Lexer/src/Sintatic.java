@@ -296,4 +296,86 @@ public class Sintatic {
             default: throw new Exception("Token inesperado!");
         }
     }
+
+    
+  void write_stmt() throws Exception{
+ 	switch(tok){
+		case WRITE: eat(WRITE); eat(OPENP); writable(); eat(CLOSEP);
+	}
+  }
+
+  void writable() throws Exception{
+  	switch(tok){
+		case LITERAL: eat(LITERAL); break;
+            case OR: simple_expr(); break;
+		default: throw new Exception("Token inesperado!");
+	}
+  }
+   
+
+
+  void condition() throws Exception{
+  	expression();
+  }
+
+
+  void stmt_suffix() throws Exception{
+	switch(tok){
+		case UNTIL: condition();
+	}
+  }
+
+  void stmt_prefix() throws Exception{
+  	switch(tok){
+		case WHILE: condition(); eat(DO);
+	}
+  }
+
+  void repeat_stmt() throws Exception{
+  	switch(tok){
+		case REPEAT: stmt_list();stmt_suffix();
+	}
+  }
+
+  void while_stmt() throws Exception{
+    stmt_prefix();
+    stmt_list();
+    eat(END);
+  }
+
+  void stmt_prefix() throws Exception{
+  	switch(tok){
+    		case WHILE: eat(WHILE); condition(); eat(DO);
+  	}
+  }
+
+  void read_stmt() throws Exception{
+  	switch(tok){
+		case READ: eat(READ); eat(OPENP); eat(ID); eat(CLOSEP);
+  	}
+  }
+
+
+  void expression() throws Exception{
+  	switch(tok){
+    		case OPENP: simpleExpr(); expression_auxiliar();
+  	}
+  }
+
+
+  void expression_auxiliar() throws Exception{
+  	switch(tok){
+		case OR: relOp(); simpleExpr(); break;
+		default: throw new Exception("Token inesperado!");
+	}
+  }
+
+
+
+
+
+
+
+
+
 }
