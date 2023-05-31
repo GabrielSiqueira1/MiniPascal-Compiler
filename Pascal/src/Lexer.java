@@ -132,6 +132,7 @@ public class Lexer {
                } else if (Integer.valueOf(ch) == 125){
                   sb.append(ch);
                   String s = sb.toString();
+                  readch();
 
                   return new Literal(s);
                } else if (length == 256){

@@ -1,7 +1,7 @@
 public class NumF extends Token{
     public final double value;
     public NumF(double value){
-        super(Tag.FLOATCONST);
+        super(Tag.FLOAT);
         this.value = value;
     }
     

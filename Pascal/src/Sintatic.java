@@ -151,7 +151,7 @@ public class Sintatic {
                 boolean shouldBreak = false;
                     while(true){
                         switch(tok){
-                            case SEMICOLON: stmt(); break;
+                            case SEMICOLON: eat(SEMICOLON); stmt(); break;
                             default: shouldBreak = true; break;
                         }
                         if(shouldBreak){
@@ -159,6 +159,7 @@ public class Sintatic {
                         }
                     }
                     break;
+                    
                 default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
@@ -171,7 +172,7 @@ public class Sintatic {
             case REPEAT: repeatStmt(); break;
             case READ: readStmt(); break;
             case WRITE: writeStmt(); break;
-            default: throw new Exception("Token inesperado na linha "+v.getLines());
+            default:
         }
     }
 
@@ -213,7 +214,7 @@ public class Sintatic {
             case SUM:
             case SUB:
             case OR: addOp(); term(); simpleExprPrime(); break;
-            default: throw new Exception("Token inesperado na linha "+v.getLines());
+            default: 
         }
     }
     
@@ -258,7 +259,7 @@ public class Sintatic {
             case INT:
             case FLOAT:
             case CHAR: constant(); break;
-            case OPENP: eat(OPENP); expression(); eat(CLOSEP); break;
+            case OPENP: expression(); eat(CLOSEP); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
@@ -267,8 +268,8 @@ public class Sintatic {
         switch(tok){
             case MULT:
             case DIV:
-            case AND: mulOp(); fatorA(); break;
-            default: throw new Exception("Token inesperado na linha "+v.getLines());
+            case AND: mulOp(); fatorA(); termPrime(); break;
+            default: 
         }
     }
     
@@ -296,8 +297,8 @@ public class Sintatic {
     void constant() throws Exception{
         switch(tok){
             case INT: eat(INT); break;
-            case FLOATCONST: eat(FLOATCONST); break;
-            case CHARCONST: eat(CHARCONST); break;
+            case FLOAT: eat(FLOAT); break;
+            case CHAR: eat(CHAR); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
@@ -305,16 +306,15 @@ public class Sintatic {
     
     void writeStmt() throws Exception{
         switch(tok){
-            case WRITE: eat(WRITE); eat(OPENP); writable(); eat(CLOSEP);
-            throw new Exception("Token inesperado na linha "+v.getLines());
+            case WRITE: eat(WRITE); eat(OPENP); writable(); eat(CLOSEP); break;
+            default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
 
     void writable() throws Exception{
         switch(tok){
             case LITERAL: eat(LITERAL); break;
-            case OR: simpleExpr(); break;
-            default: throw new Exception("Token inesperado na linha "+v.getLines());
+            default: simpleExpr();
         }
     }
    
@@ -350,21 +350,21 @@ public class Sintatic {
 
     void stmtPrefix() throws Exception{
         switch(tok){
-            case WHILE: eat(WHILE); condition(); eat(DO);
+            case WHILE: eat(WHILE); condition(); eat(DO); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
 
     void readStmt() throws Exception{
         switch(tok){
-            case READ: eat(READ); eat(OPENP); eat(ID); eat(CLOSEP);
+            case READ: eat(READ); eat(OPENP); eat(ID); eat(CLOSEP); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
 
     void expression() throws Exception{
         switch(tok){
-            case OPENP: simpleExpr(); expressionAuxiliar();
+            case OPENP: eat(OPENP); simpleExpr(); expressionAuxiliar(); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
@@ -372,7 +372,7 @@ public class Sintatic {
     void expressionAuxiliar() throws Exception{
         switch(tok){
             case OR: relOp(); simpleExpr(); break;
-            default: throw new Exception("Token inesperado na linha "+v.getLines());
+            default: 
         }
     }
 }
