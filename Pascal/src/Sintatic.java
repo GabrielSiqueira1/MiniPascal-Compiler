@@ -57,21 +57,25 @@ public class Sintatic {
 
     public Sintatic(Lexer teste) throws Exception{
         v = teste;
-        tok = v.scan().tag; 
+        tok = v.scan().tag;
+        program();
     }
 
     void advance() throws Exception{
         tok = v.scan().tag;
+        System.out.println("Now "+tok);
     }
 
     void eat(int t) throws Exception{
+        System.out.println(tok);
+        System.out.println(t);
         if(tok == t) advance();
         else throw new Exception("Token desigual ao caractere esperado na linha "+v.getLines());
     }
     
     void program() throws Exception{
         switch(tok){
-            case PRG: eat(ID);
+            case PRG: eat(PRG); eat(ID);
                 switch(tok){
                     case ID: declList(); eat(BEG); break;
                     case BEG: break;
@@ -112,9 +116,10 @@ public class Sintatic {
         switch(tok){
             case ID: 
                 boolean shouldBreak = false;
+                eat(ID);
                 while(true){
                     switch(tok){
-                        case SEMICOLON: eat(ID); break;
+                        case COLON: eat(COLON); eat(ID); break;
                         default: shouldBreak = true; break;
                     }
                     if(shouldBreak){
@@ -128,9 +133,9 @@ public class Sintatic {
 
     void type() throws Exception{
         switch(tok){
-            case INT: break;
-            case FLOAT: break;
-            case CHAR: break;
+            case INT: eat(INT); break;
+            case FLOAT: eat(FLOAT); break;
+            case CHAR: eat(CHAR); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
@@ -172,7 +177,7 @@ public class Sintatic {
 
     void assignStmt() throws Exception{
         switch(tok){
-            case ID: eat(EQ); simpleExpr(); break;
+            case ID: eat(ID); eat(ATRIB); simpleExpr(); break;
             default: throw new Exception("Token inesperado "+v.getLines());
         }
     }
@@ -290,7 +295,7 @@ public class Sintatic {
     
     void constant() throws Exception{
         switch(tok){
-            case INTCONST: eat(INTCONST); break;
+            case INT: eat(INT); break;
             case FLOATCONST: eat(FLOATCONST); break;
             case CHARCONST: eat(CHARCONST); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
