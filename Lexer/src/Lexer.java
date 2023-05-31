@@ -220,5 +220,9 @@ public class Lexer {
    public Hashtable<String, Word> getWords(){
       return words.getTable();
    }
+
+   public int getLines(){
+      return line;
+   }
       
 }
