@@ -185,7 +185,7 @@ public class Sintatic {
 
     void ifStmt() throws Exception{
         switch(tok){
-            case IF: condition(); eat(THEN); stmtList(); ifStmtPrime(); break;
+            case IF: eat(IF); condition(); eat(THEN); System.out.println("comeu THEN"); stmtList(); ifStmtPrime(); break;
             default: throw new Exception("Token inesperado!");
         }
     }
@@ -193,7 +193,7 @@ public class Sintatic {
     void ifStmtPrime() throws Exception{
         switch(tok){
             case END: break;
-            case ELSE: stmtList(); eat(END); break;
+            case ELSE: eat(ELSE); stmtList(); eat(END); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
@@ -255,11 +255,11 @@ public class Sintatic {
     
     void factor() throws Exception{
         switch(tok){
-            case ID: eat(ID); break;
+            case ID: eat(ID); System.out.println("comeu ID"); break;
             case INT:
             case FLOAT:
             case CHAR: constant(); break;
-            case OPENP: expression(); eat(CLOSEP); break;
+            case OPENP: expression(); eat(CLOSEP); System.out.println("comeu CLOSEP"); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
@@ -276,7 +276,7 @@ public class Sintatic {
     void relOp() throws Exception{
         switch(tok){
             case EQ: eat(EQ); break;
-            case G: eat(G); break;
+            case G: eat(G); System.out.println("comeu G"); break;
             case GE: eat(GE); break;
             case NE: eat(NE); break;
             case L: eat(L); break;
@@ -364,15 +364,20 @@ public class Sintatic {
 
     void expression() throws Exception{
         switch(tok){
-            case OPENP: eat(OPENP); simpleExpr(); expressionAuxiliar(); break;
+            case OPENP: eat(OPENP); System.out.println("comeu OPENP"); simpleExpr(); expressionAuxiliar(); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
 
     void expressionAuxiliar() throws Exception{
         switch(tok){
-            case OR: relOp(); simpleExpr(); break;
-            default: 
+            case EQ: 
+            case G: 
+            case GE: 
+            case NE: 
+            case L: 
+            case LE: relOp(); simpleExpr(); break;
+            default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
 }
