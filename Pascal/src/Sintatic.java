@@ -185,7 +185,7 @@ public class Sintatic {
 
     void ifStmt() throws Exception{
         switch(tok){
-            case IF: eat(IF); condition(); eat(THEN); System.out.println("comeu THEN"); stmtList(); ifStmtPrime(); break;
+            case IF: eat(IF); condition(); eat(CLOSEP); eat(THEN); System.out.println("comeu THEN"); stmtList(); ifStmtPrime(); break;
             default: throw new Exception("Token inesperado!");
         }
     }
@@ -377,7 +377,7 @@ public class Sintatic {
             case NE: 
             case L: 
             case LE: relOp(); simpleExpr(); break;
-            default: throw new Exception("Token inesperado na linha "+v.getLines());
+            default:
         }
     }
 }
