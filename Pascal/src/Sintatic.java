@@ -354,7 +354,7 @@ public class Sintatic {
 
     void stmtPrefix() throws Exception{
         switch(tok){
-            case WHILE: eat(WHILE); condition(); eat(DO); break;
+            case WHILE: eat(WHILE); condition(); eat(CLOSEP); eat(DO); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
