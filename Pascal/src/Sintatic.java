@@ -63,6 +63,10 @@ public class Sintatic {
 
     void advance() throws Exception{
         tok = v.scan().tag;
+        if(tok == 10){
+            tok = v.scan().tag;
+        }
+
         System.out.println("Now "+tok);
     }
 
@@ -172,7 +176,7 @@ public class Sintatic {
             case REPEAT: repeatStmt(); break;
             case READ: readStmt(); break;
             case WRITE: writeStmt(); break;
-            default:
+            default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
 
@@ -192,7 +196,7 @@ public class Sintatic {
     
     void ifStmtPrime() throws Exception{
         switch(tok){
-            case END: break;
+            case END: eat(END); break;
             case ELSE: eat(ELSE); stmtList(); eat(END); break;
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
