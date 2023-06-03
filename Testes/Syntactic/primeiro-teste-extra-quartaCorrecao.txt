@@ -1,0 +1,17 @@
+program teste4
+/* Teste extra
+
+    Para esse teste pensou-se em criar uma progressão geométrica
+
+ */
+    a is int;
+    begin
+    a = 1; /*  Número inicial da progressão */
+    q = 4; /*  Razão da progressão */
+
+    while (a < 10) do 
+        a = q * a;
+        write({Valor da progressao: });
+        read(a);
+
+end
