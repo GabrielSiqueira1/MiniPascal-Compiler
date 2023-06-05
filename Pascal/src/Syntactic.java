@@ -326,14 +326,14 @@ public class Syntactic {
 
     void stmtSuffix() throws Exception{
         switch(tok){
-            case UNTIL: condition();
+            case UNTIL: eat(UNTIL); condition();
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
 
     void repeatStmt() throws Exception{
         switch(tok){
-            case REPEAT: stmtList();stmtSuffix();
+            case REPEAT: eat(REPEAT); stmtList();stmtSuffix();
             default: throw new Exception("Token inesperado na linha "+v.getLines());
         }
     }
