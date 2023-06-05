@@ -1,0 +1,24 @@
+program teste4
+/* Teste4 do meu compilador */
+    pontuacao, pontuacaoMaxima, disponibilidade is int;
+    pontuacaoMinima is char;
+    begin
+        pontuacaoMinima = 50;
+        pontuacaoMaxima = 100;
+        write({Pontuacao do candidato: });
+        read(pontuacao);    
+        write({Disponibilidade do candidato: });
+        read(disponibilidade);
+
+        while (pontuacao>0 && (pontuacao<=pontuacaoMaxima)) do
+            if ((pontuacao > pontuacaoMinima) && (disponibilidade==1)) then
+                write({Candidato aprovado.})
+            else
+                write({Candidato reprovado.})
+        end;
+        write({Pontuacao do candidato: });
+        read(pontuacao);
+        write({Disponibilidade do candidato: });
+        read(disponibilidade);
+    end
+end
