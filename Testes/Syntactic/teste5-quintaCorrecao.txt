@@ -25,5 +25,5 @@ program teste5
         write (maior);
         write ({Outro? (S/N)});
         read(outro)
-    until (outro == 2)
+    until ((outro == 'N') || (outro == 'n'))
 end.
