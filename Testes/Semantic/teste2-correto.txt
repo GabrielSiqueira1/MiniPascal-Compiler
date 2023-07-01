@@ -1,0 +1,13 @@
+program teste2
+
+        a is int;
+        a, b, c, d, var, val is float;
+begin
+    read (a);
+    b = a * a;
+    c = b + (a/2.0) * (35.0/b);
+    write (c);
+    val = 34.2;
+    c = val + 2.2 + a;
+    write (val)
+end.
