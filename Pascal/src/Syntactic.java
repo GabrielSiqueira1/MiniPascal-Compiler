@@ -5,15 +5,17 @@ public class Syntactic {
 
     public class SemObj {
         String type;
-        public SemObj(String s){
+
+        public SemObj(String s) {
             this.type = s;
         }
 
-        public void setType(String type){
+        public void setType(String type) {
             this.type = type;
         }
     }
-    HashMap<String,String> variables = new HashMap<>();
+
+    HashMap<String, String> variables = new HashMap<>();
     final int
     // Palavras reservadas
     IS = 255,
@@ -80,28 +82,25 @@ public class Syntactic {
     }
 
     void advance() throws Exception {
-        if(tok == 273 && token instanceof Word){
-            System.out.println("Entrou");
+        if (tok == 273 && token instanceof Word) {
             w = (Word) token;
-            System.out.println(w.getLexeme());
             token = v.scan();
-            tok = token.tag; 
-        }
-        else{
+            tok = token.tag;
+        } else {
             token = v.scan();
-            tok = token.tag;  
+            tok = token.tag;
         }
 
         if (tok == 10) {
-                token = v.scan();
-                tok = token.tag;
+            token = v.scan();
+            tok = token.tag;
         }
     }
 
     void eat(int t) throws Exception {
-        System.out.println("tok: " + tok);
-        System.out.println("t: " + t);
-        System.out.println(variables);
+        // System.out.println("tok: " + tok);
+        // System.out.println("t: " + t);
+        // System.out.println(variables);
         if (tok == t)
             advance();
         else
@@ -181,14 +180,14 @@ public class Syntactic {
             case ID:
                 boolean shouldBreak = false;
                 eat(ID);
-                variables.put(w.getLexeme(),"none");
+                variables.put(w.getLexeme(), "none");
                 newVar.add(w.getLexeme());
                 while (true) {
                     switch (tok) {
                         case COLON:
                             eat(COLON);
                             eat(ID);
-                            variables.put(w.getLexeme(),"none");
+                            variables.put(w.getLexeme(), "none");
                             newVar.add(w.getLexeme());
                             break;
                         default:
@@ -284,16 +283,17 @@ public class Syntactic {
         switch (tok) {
             case ID:
                 eat(ID);
+                if (!variables.containsKey(w.getLexeme()))
+                    throw new Exception("Variável não declarada na linha " + v.getLines());
                 SemObj o1 = new SemObj(variables.get(w.getLexeme()));
                 eat(ATRIB);
                 SemObj o2 = simpleExpr();
-                if((o1.type == o2.type) || (o1.type == "float" && o2.type == "int")){
+                if ((o1.type == o2.type) || (o1.type == "float" && o2.type == "int")) {
                     break;
-                }
-                else{
+                } else {
                     throw new Exception("Tipos incompatíveis na linha " + v.getLines());
                 }
-                
+
             default:
                 throw new Exception("Token inesperado " + v.getLines());
         }
@@ -351,10 +351,9 @@ public class Syntactic {
             case OR:
                 addOp();
                 SemObj o2 = term();
-                if(o1.type == o2.type){
+                if (o1.type == o2.type) {
                     simpleExprPrime(o2);
-                }
-                else{
+                } else {
                     throw new Exception("Tipos incompatíveis na linha " + v.getLines());
                 }
                 break;
@@ -411,10 +410,9 @@ public class Syntactic {
             case SUB:
                 eat(SUB);
                 SemObj o3 = factor();
-                if(o3.type == "int" || o3.type == "float"){
+                if (o3.type == "int" || o3.type == "float") {
                     return o3;
-                }
-                else{
+                } else {
                     throw new Exception("Tipos incompatíveis na linha " + v.getLines());
                 }
             default:
@@ -426,6 +424,8 @@ public class Syntactic {
         switch (tok) {
             case ID:
                 eat(ID);
+                if (!variables.containsKey(w.getLexeme()))
+                    throw new Exception("Variável não declarada na linha " + v.getLines());
                 SemObj o1 = new SemObj(variables.get(w.getLexeme()));
                 return o1;
             case INT:
@@ -514,7 +514,7 @@ public class Syntactic {
             case INT:
                 eat(INT);
                 SemObj o1 = new SemObj("int");
-                System.out.println(o1.type);
+                // System.out.println(o1.type);
                 return o1;
             case FLOAT:
                 eat(FLOAT);
@@ -610,6 +610,8 @@ public class Syntactic {
                 eat(READ);
                 eat(OPENP);
                 eat(ID);
+                if (!variables.containsKey(w.getLexeme()))
+                    throw new Exception("Variável não declarada na linha " + v.getLines());
                 eat(CLOSEP);
                 break;
             default:
@@ -639,10 +641,9 @@ public class Syntactic {
             case LE:
                 relOp();
                 SemObj o2 = simpleExpr();
-                if(o1.type == o2.type){
+                if (o1.type == o2.type) {
                     break;
-                }
-                else{
+                } else {
                     throw new Exception("Tipos incompatíveis na linha " + v.getLines());
                 }
             default:
