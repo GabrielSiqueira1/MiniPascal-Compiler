@@ -388,7 +388,7 @@ public class Syntactic {
             case EXCL:
             case SUB:
                 SemObj o1 = fatorA();
-                termPrime(o1);
+                o1 = termPrime(o1);
                 return o1;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
@@ -442,21 +442,26 @@ public class Syntactic {
         }
     }
 
-    void termPrime(SemObj o1) throws Exception {
+    SemObj termPrime(SemObj o1) throws Exception {
         switch (tok) {
             case MULT:
             case DIV:
             case AND:
-                mulOp();
+                SemObj o4 = new SemObj("float");
+                SemObj o3 = mulOp();
                 SemObj o2 = fatorA();
-                if(o1.type == o2.type){
+                if (o1.type == o2.type && o3.type == "/") {
+                    o4.type = "float";
                     termPrime(o2);
-                }
-                else{
+                } else if (o1.type == o2.type) {
+                    o4.type = o1.type;
+                    termPrime(o2);
+                } else {
                     throw new Exception("Tipos incompatíveis na linha " + v.getLines());
                 }
-                break;
+                return o4;
             default:
+                return o1;
         }
     }
 
@@ -485,17 +490,20 @@ public class Syntactic {
         }
     }
 
-    void mulOp() throws Exception {
+    SemObj mulOp() throws Exception {
         switch (tok) {
             case MULT:
                 eat(MULT);
-                break;
+                SemObj o1 = new SemObj("*");
+                return o1;
             case DIV:
                 eat(DIV);
-                break;
+                SemObj o2 = new SemObj("/");
+                return o2;
             case AND:
                 eat(AND);
-                break;
+                SemObj o3 = new SemObj("&&");
+                return o3;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
