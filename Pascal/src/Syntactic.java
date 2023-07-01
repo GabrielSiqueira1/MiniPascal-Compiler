@@ -1,4 +1,19 @@
+import java.util.HashMap;
+import java.util.ArrayList;
+
 public class Syntactic {
+
+    public class SemObj {
+        String type;
+        public SemObj(String s){
+            this.type = s;
+        }
+
+        public void setType(String type){
+            this.type = type;
+        }
+    }
+    HashMap<String,String> variables = new HashMap<>();
     final int
     // Palavras reservadas
     IS = 255,
@@ -53,6 +68,8 @@ public class Syntactic {
             FLOATCONST = 284;
 
     int tok = 0;
+    Token token = null;
+    Word w;
     Lexer v;
 
     public Syntactic(Lexer teste) throws Exception {
@@ -63,15 +80,28 @@ public class Syntactic {
     }
 
     void advance() throws Exception {
-        tok = v.scan().tag;
+        if(tok == 273 && token instanceof Word){
+            System.out.println("Entrou");
+            w = (Word) token;
+            System.out.println(w.getLexeme());
+            token = v.scan();
+            tok = token.tag; 
+        }
+        else{
+            token = v.scan();
+            tok = token.tag;  
+        }
+
         if (tok == 10) {
-            tok = v.scan().tag;
+                token = v.scan();
+                tok = token.tag;
         }
     }
 
     void eat(int t) throws Exception {
         System.out.println("tok: " + tok);
         System.out.println("t: " + t);
+        System.out.println(variables);
         if (tok == t)
             advance();
         else
@@ -130,27 +160,36 @@ public class Syntactic {
     }
 
     void decl() throws Exception {
+        ArrayList<String> newVar;
         switch (tok) {
             case ID:
-                identList();
+                newVar = identList();
                 eat(IS);
-                type();
+                SemObj o = type();
+                for (String s : newVar) {
+                    variables.put(s, o.type);
+                }
                 break;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
     }
 
-    void identList() throws Exception {
+    ArrayList<String> identList() throws Exception {
+        ArrayList<String> newVar = new ArrayList<>();
         switch (tok) {
             case ID:
                 boolean shouldBreak = false;
                 eat(ID);
+                variables.put(w.getLexeme(),"none");
+                newVar.add(w.getLexeme());
                 while (true) {
                     switch (tok) {
                         case COLON:
                             eat(COLON);
                             eat(ID);
+                            variables.put(w.getLexeme(),"none");
+                            newVar.add(w.getLexeme());
                             break;
                         default:
                             shouldBreak = true;
@@ -160,23 +199,26 @@ public class Syntactic {
                         break;
                     }
                 }
-                break;
+                return newVar;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
     }
 
-    void type() throws Exception {
+    SemObj type() throws Exception {
         switch (tok) {
             case INT:
                 eat(INT);
-                break;
+                SemObj o1 = new SemObj("int");
+                return o1;
             case FLOAT:
                 eat(FLOAT);
-                break;
+                SemObj o2 = new SemObj("float");
+                return o2;
             case CHAR:
                 eat(CHAR);
-                break;
+                SemObj o3 = new SemObj("char");
+                return o3;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
@@ -242,9 +284,16 @@ public class Syntactic {
         switch (tok) {
             case ID:
                 eat(ID);
+                SemObj o1 = new SemObj(variables.get(w.getLexeme()));
                 eat(ATRIB);
-                simpleExpr();
-                break;
+                SemObj o2 = simpleExpr();
+                if((o1.type == o2.type) || (o1.type == "float" && o2.type == "int")){
+                    break;
+                }
+                else{
+                    throw new Exception("Tipos incompatíveis na linha " + v.getLines());
+                }
+                
             default:
                 throw new Exception("Token inesperado " + v.getLines());
         }
@@ -280,29 +329,34 @@ public class Syntactic {
         }
     }
 
-    void simpleExpr() throws Exception {
+    SemObj simpleExpr() throws Exception {
         switch (tok) {
             case ID:
             case INT:
             case FLOAT:
             case CHAR:
             case OPENP:
-                term();
-                simpleExprPrime();
-                break;
+                SemObj o1 = term();
+                simpleExprPrime(o1);
+                return o1;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
     }
 
-    void simpleExprPrime() throws Exception {
+    void simpleExprPrime(SemObj o1) throws Exception {
         switch (tok) {
             case SUM:
             case SUB:
             case OR:
                 addOp();
-                term();
-                simpleExprPrime();
+                SemObj o2 = term();
+                if(o1.type == o2.type){
+                    simpleExprPrime(o2);
+                }
+                else{
+                    throw new Exception("Tipos incompatíveis na linha " + v.getLines());
+                }
                 break;
             default:
         }
@@ -324,7 +378,7 @@ public class Syntactic {
         }
     }
 
-    void term() throws Exception {
+    SemObj term() throws Exception {
         switch (tok) {
             case ID:
             case INT:
@@ -333,63 +387,74 @@ public class Syntactic {
             case OPENP:
             case EXCL:
             case SUB:
-                fatorA();
-                termPrime();
-                break;
+                SemObj o1 = fatorA();
+                termPrime(o1);
+                return o1;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
     }
 
-    void fatorA() throws Exception {
+    SemObj fatorA() throws Exception {
         switch (tok) {
             case ID:
             case INT:
             case FLOAT:
             case CHAR:
             case OPENP:
-                factor();
-                break;
+                SemObj o1 = factor();
+                return o1;
             case EXCL:
                 eat(EXCL);
-                factor();
-                break;
+                SemObj o2 = factor();
+                return o2;
             case SUB:
                 eat(SUB);
-                factor();
-                break;
+                SemObj o3 = factor();
+                if(o3.type == "int" || o3.type == "float"){
+                    return o3;
+                }
+                else{
+                    throw new Exception("Tipos incompatíveis na linha " + v.getLines());
+                }
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
     }
 
-    void factor() throws Exception {
+    SemObj factor() throws Exception {
         switch (tok) {
             case ID:
                 eat(ID);
-                break;
+                SemObj o1 = new SemObj(variables.get(w.getLexeme()));
+                return o1;
             case INT:
             case FLOAT:
             case CHAR:
-                constant();
-                break;
+                SemObj o2 = constant();
+                return o2;
             case OPENP:
-                expression();
+                SemObj o3 = expression();
                 eat(CLOSEP);
-                break;
+                return o3;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
     }
 
-    void termPrime() throws Exception {
+    void termPrime(SemObj o1) throws Exception {
         switch (tok) {
             case MULT:
             case DIV:
             case AND:
                 mulOp();
-                fatorA();
-                termPrime();
+                SemObj o2 = fatorA();
+                if(o1.type == o2.type){
+                    termPrime(o2);
+                }
+                else{
+                    throw new Exception("Tipos incompatíveis na linha " + v.getLines());
+                }
                 break;
             default:
         }
@@ -436,17 +501,21 @@ public class Syntactic {
         }
     }
 
-    void constant() throws Exception {
+    SemObj constant() throws Exception {
         switch (tok) {
             case INT:
                 eat(INT);
-                break;
+                SemObj o1 = new SemObj("int");
+                System.out.println(o1.type);
+                return o1;
             case FLOAT:
                 eat(FLOAT);
-                break;
+                SemObj o2 = new SemObj("float");
+                return o2;
             case CHAR:
                 eat(CHAR);
-                break;
+                SemObj o3 = new SemObj("char");
+                return o3;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
@@ -540,19 +609,19 @@ public class Syntactic {
         }
     }
 
-    void expression() throws Exception {
+    SemObj expression() throws Exception {
         switch (tok) {
             case OPENP:
                 eat(OPENP);
-                simpleExpr();
-                expressionAuxiliar();
-                break;
+                SemObj o1 = simpleExpr();
+                expressionAuxiliar(o1);
+                return o1;
             default:
                 throw new Exception("Token inesperado na linha " + v.getLines());
         }
     }
 
-    void expressionAuxiliar() throws Exception {
+    void expressionAuxiliar(SemObj o1) throws Exception {
         switch (tok) {
             case EQ:
             case G:
@@ -561,8 +630,13 @@ public class Syntactic {
             case L:
             case LE:
                 relOp();
-                simpleExpr();
-                break;
+                SemObj o2 = simpleExpr();
+                if(o1.type == o2.type){
+                    break;
+                }
+                else{
+                    throw new Exception("Tipos incompatíveis na linha " + v.getLines());
+                }
             default:
         }
     }
