@@ -1,6 +1,6 @@
 program teste1
 
-a, b is int;
+a, b, c is int;
 result is float;
 x is float;
 begin
