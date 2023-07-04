@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) throws Exception {
-        Lexer lex = new Lexer("Testes/Syntactic/teste5-quintaCorrecao.txt");
+        Lexer lex = new Lexer("../../Testes/Semantic/segundo-teste-extra-segundaCorrecao.txt");
         new Syntactic(lex);
     }
 }

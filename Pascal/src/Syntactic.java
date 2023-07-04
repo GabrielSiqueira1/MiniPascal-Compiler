@@ -78,7 +78,7 @@ public class Syntactic {
         v = teste;
         tok = v.scan().tag;
         program();
-        System.out.println("Código sintaticamente correto!");
+        System.out.println("Código semanticamente correto!");
     }
 
     void advance() throws Exception {
@@ -180,15 +180,21 @@ public class Syntactic {
             case ID:
                 boolean shouldBreak = false;
                 eat(ID);
-                variables.put(w.getLexeme(), "none");
-                newVar.add(w.getLexeme());
+                if (!variables.containsKey(w.getLexeme())){
+	    		variables.put(w.getLexeme(), "none");
+	    		newVar.add(w.getLexeme());
+		}
+		else throw new Exception("Variável já declarada na linha "+ v.getLines());
                 while (true) {
                     switch (tok) {
                         case COLON:
                             eat(COLON);
                             eat(ID);
-                            variables.put(w.getLexeme(), "none");
-                            newVar.add(w.getLexeme());
+                            if (!variables.containsKey(w.getLexeme())){
+                            	variables.put(w.getLexeme(), "none");
+                            	newVar.add(w.getLexeme());
+                            }
+                            else throw new Exception("Variável já declarada na linha "+ v.getLines());
                             break;
                         default:
                             shouldBreak = true;
