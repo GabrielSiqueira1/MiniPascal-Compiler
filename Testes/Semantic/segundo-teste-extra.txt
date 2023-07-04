@@ -1,0 +1,18 @@
+program teste4
+/* Teste extra 2
+
+    Para esse segundo teste pensou-se em gerar um erro no código fonte de um programa que
+    calcula o perimêtro dadad uma circunferência. O erro estará na linha 11.
+
+ */
+    raio is int;
+    circ is float;
+    pi is float;
+    begin
+    pi = 3.14159;
+
+    circ = 2 * pi * raio;
+    write({O valor da circunferência é: });
+    read(circ)
+
+end.
